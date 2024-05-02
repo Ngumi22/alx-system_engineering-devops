@@ -1,0 +1,29 @@
+#!/usr/bin/env bash
+
+# Check if Nginx service is running
+if ! systemctl is-active --quiet nginx; then
+    echo "Nginx service is not running. Starting Nginx..."
+    systemctl start nginx
+    sleep 1  # Wait for Nginx to start
+fi
+
+# Check Nginx configuration files for any issues
+if ! nginx -t &> /dev/null; then
+    echo "Nginx configuration test failed. Check configuration files for errors."
+    exit 1
+fi
+
+# Check if any other process is listening on port 80
+if ! lsof -i :80 &> /dev/null; then
+    echo "No process is listening on port 80. Restarting Nginx..."
+    systemctl restart nginx
+    sleep 1  # Wait for Nginx to restart
+fi
+
+# Verify if Nginx is now listening on port 80
+if lsof -i :80 &> /dev/null; then
+    echo "Nginx is now listening on port 80."
+else
+    echo "Failed to make Nginx listen on port 80."
+    exit 1
+fi
