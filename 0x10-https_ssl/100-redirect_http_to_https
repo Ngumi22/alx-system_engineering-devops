@@ -33,20 +33,20 @@ defaults
     errorfile 503 /etc/haproxy/errors/503.http
     errorfile 504 /etc/haproxy/errors/504.http
 
-frontend clickviral-frontend
+frontend ngumi-frontend
     bind *:80
     mode http
     option http-server-close
     http-request redirect scheme https code 301 if !{ ssl_fc }
     http-request set-header X_Forwarded-Proto http
-    default_backend clickviral-backend
+    default_backend ngumi-backend
 
-frontend clickviral-frontend-https
-    bind *:443 ssl crt /etc/haproxy/certs/clickviral.tech.pem
+frontend ngumi-frontend-https
+    bind *:443 ssl crt /etc/haproxy/certs/ngumi.tech.pem
     http-request set-header X-Forwarded-Proto https
-    default_backend clickviral-backend
+    default_backend ngumi-backend
 
-backend clickviral-backend
+backend ngumi-backend
     balance roundrobin
     server 531412-web-01 34.229.72.248 check
     server 531412-web-02 54.160.116.88 check
