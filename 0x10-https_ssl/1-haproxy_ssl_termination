@@ -35,7 +35,7 @@ defaults
 
 frontend ngumi-frontend
     bind *:80
-    bind *:443 ssl crt /etc/haproxy/certs/ngumi.tech.pem
+    bind *:443 ssl crt /etc/haproxy/certs/www.ngumi.tech.pem
     mode http
     http-request redirect scheme https code 301 unless { ssl_fc }
     http-request set-header X-Forwarded-Proto http
@@ -43,5 +43,5 @@ frontend ngumi-frontend
 
 backend ngumi-backend
     balance roundrobin
-    server 531412-web-01 34.229.72.248:80 check
-    server 531412-web-02 54.160.116.88:80 check
+    server 531412-web-01 107.22.146.20:80 check
+    server 531412-web-02 18.234.105.178:80 check
