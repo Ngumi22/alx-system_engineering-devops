@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+# Runs the user provided in an argumen
+sudo -u "$1" whoami
