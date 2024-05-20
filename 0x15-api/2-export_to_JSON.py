@@ -1,57 +1,30 @@
 #!/usr/bin/python3
+"""Get data from an API and convert to Json"""
+import csv
 import json
 import requests
 import sys
-"""export data in the JSON format"""
 
 
-def get_employee_todo_progress(employee_id):
-    """Base URL for the API"""
-    base_url = "https://jsonplaceholder.typicode.com"
+if __name__ == '__main__':
+    USER_ID = sys.argv[1]
+    url_to_user = 'https://jsonplaceholder.typicode.com/users/' + USER_ID
+    res = requests.get(url_to_user)
+    """Documentation"""
+    USERNAME = res.json().get('username')
+    """Documentation"""
+    url_to_task = url_to_user + '/todos'
+    res = requests.get(url_to_task)
+    tasks = res.json()
 
-    """Fetch the employee data"""
-    user_url = f"{base_url}/users/{employee_id}"
-    user_response = requests.get(user_url)
-    if user_response.status_code != 200:
-        print("User not found.")
-        return
-    user_data = user_response.json()
-    employee_name = user_data['name']
-
-    """Fetch the TODO list for the employee"""
-    todos_url = f"{base_url}/todos?userId={employee_id}"
-    todos_response = requests.get(todos_url)
-    if todos_response.status_code != 200:
-        print("Todos not found.")
-        return
-    todos_data = todos_response.json()
-
-    """Prepare JSON data"""
-    json_data = {str(employee_id): []}
-    for task in todos_data:
-        json_data[str(employee_id)].append({
-            "task": task["title"],
-            "completed": task["completed"],
-            "username": employee_name
-        })
-
-    """Write JSON data into a file"""
-    json_filename = f"{employee_id}.json"
-    with open(json_filename, 'w') as json_file:
-        json.dump(json_data, json_file)
-
-    print(f"Data exported to {json_filename}.")
-
-
-if __name__ == "__main__":
-    if len(sys.argv) != 2:
-        print("Usage: python3 2-export_to_JSON.py <employee_id>")
-        sys.exit(1)
-
-    try:
-        employee_id = int(sys.argv[1])
-    except ValueError:
-        print("Employee ID must be an integer.")
-        sys.exit(1)
-
-    get_employee_todo_progress(employee_id)
+    dict_data = {USER_ID: []}
+    for task in tasks:
+        TASK_COMPLETED_STATUS = task.get('completed')
+        TASK_TITLE = task.get('title')
+        dict_data[USER_ID].append({
+                                  "task": TASK_TITLE,
+                                  "completed": TASK_COMPLETED_STATUS,
+                                  "username": USERNAME})
+    """print(dict_data)"""
+    with open('{}.json'.format(USER_ID), 'w') as f:
+        json.dump(dict_data, f)
