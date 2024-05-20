@@ -3,6 +3,8 @@ import requests
 import sys
 """ returns information about his/her TODO list progress"""
 
+REST_API = "https://jsonplaceholder.typicode.com"
+
 
 def get_employee_todo_progress(employee_id):
     """Base URL for the API"""
