@@ -25,7 +25,7 @@ sudo chmod -R 755 /var/www
 cp /var/www/html/index.nginx-debian.html /var/www/html/index.nginx-debian.html.bckp
 
 # Creating new index
-echo -e "Hello World!" | sudo dd status=none of=/var/www/html/index.nginx-debian.html
+echo -e "Hello Ngumi!" | sudo dd status=none of=/var/www/html/index.nginx-debian.html
 
 # Restarting nginx
 sudo service nginx restart
